@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "npm run test-jest && npm run test-mocha",
     "test-jest": "jest",
     "test-mocha": "ts-mocha src/**/*.test.ts --require mocha_setup.js"
   },
