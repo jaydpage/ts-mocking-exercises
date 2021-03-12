@@ -1,7 +1,7 @@
 {
   "name": "ts-mocking-exercises",
   "version": "1.0.0",
-  "description": "",
+  "description": "The aim of this exercise is to use various mocking techniques to successfully write unit tests for the provided code examples.",
   "main": "index.js",
   "scripts": {
     "test": "npm run test-jest && npm run test-mocha",
