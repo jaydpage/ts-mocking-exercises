@@ -4,7 +4,7 @@ import { PubSub } from '../tests-to-implement/06_PubSub'
 
 describe('PubSub', () => {
   describe('subscribe', () => {
-    it('calls subsription callback when publish occurs on channel', async () => {
+    it('calls subscription callback when publish occurs on channel', async () => {
       // Arrange
       const pubSub = PubSub.getInstance()
       const callback = sinon.stub()

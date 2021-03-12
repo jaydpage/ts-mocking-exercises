@@ -3,7 +3,7 @@ import { listenForCall } from "./helpers/jest_typed_mock"
 
 describe('PubSub', () => {
   describe('subscribe', () => {
-    it('calls subsription callback when publish occurs on channel', async () => {
+    it('calls subscription callback when publish occurs on channel', async () => {
       // Arrange
       const pubSub = PubSub.getInstance()
       const callback = jest.fn()
