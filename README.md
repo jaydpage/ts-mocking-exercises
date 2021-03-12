@@ -2,6 +2,17 @@
 
 The aim of this exercise is to use various mocking techniques to successfully write unit tests for the provided code examples.
 
+## Getting started
+By default testing with `mocha, sinon & chai` or `jest` is available. Jest is configured to run against `.spec.ts` files and mocha is configured to run against `.test.ts` files.
+
+- run all tests (mocha and jest): `npm run test`
+- run jest tests: `npm run test-jest`
+- run mocha tests: `npm run test-mocha`
+
+Feel free to test with whichever testing/mocking framework you like, for example `jasmine`.
+
+## Tests to implement
+
 ### 1. Function was called
 
 - [01_object_callback.spec.ts](src/tests-to-implement/01_object_callback.spec.ts)
@@ -37,6 +48,6 @@ The aim of this exercise is to use various mocking techniques to successfully wr
 - [07_use_it_all.spec.ts](src/tests-to-implement/07_use_it_all.spec.ts)
 - Put all the above techniques into action in a single place
 
-### Implemented examples
+## Implemented examples
 
 [Examples](src/tests-implemented) on how to implement these tests can be found for both mocha/sinon/chai as well as jest.
