@@ -38,17 +38,15 @@ describe('ItemProcessor', () => {
       it('updates the cache with the item', async () => {
         // Arrange
         const item = testItemBuilder().build()
-        const testPromise = createPromise<Item[]>()
 
         const itemRepository = ItemRepositoryTestDataBuilder.create()
-          .withPromiseForGetAll(testPromise.promise)
+          .withItemsForGetAll(item)
           .build()
         const inMemoryCache = InMemoryCacheTestDataBuilder.createWithRandomProps().build()
 
         const sut = createSut(inMemoryCache, itemRepository)
         // Act
-        sut.processItems()
-        await testPromise.resolve([item]);
+        await sut.processItems()
         // Assert
         expect(inMemoryCache.update).to.have.been.calledOnceWith(item)
       })
