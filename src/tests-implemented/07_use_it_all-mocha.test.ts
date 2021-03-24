@@ -6,6 +6,8 @@ import { default as sinon, SinonStubbedInstance } from 'sinon'
 import { expect } from 'chai'
 import { ItemRepositoryTestDataBuilder } from "./builders/item-repository-test-data-builder"
 import { InMemoryCacheTestDataBuilder } from "./builders/in-memory-cache-test-data-builder"
+import { Item } from "../dependencies/Item"
+import { createPromise } from "./helpers/test-promise"
 
 describe('ItemProcessor', () => {
   beforeEach(() => {
@@ -22,7 +24,7 @@ describe('ItemProcessor', () => {
       const itemRepository = ItemRepositoryTestDataBuilder.createWithRandomProps().build()
 
       const sut = createSut(
-        InMemoryCacheTestDataBuilder.createWithRandomProps().build(), 
+        InMemoryCacheTestDataBuilder.createWithRandomProps().build(),
         itemRepository
       )
       // Act
@@ -33,10 +35,22 @@ describe('ItemProcessor', () => {
     })
 
     describe('given single unprocessed item', () => {
-      it.skip('updates the cache with the item', async () => {
+      it('updates the cache with the item', async () => {
         // Arrange
+        const item = testItemBuilder().build()
+        const testPromise = createPromise<Item[]>()
+
+        const itemRepository = ItemRepositoryTestDataBuilder.create()
+          .withPromiseForGetAll(testPromise.promise)
+          .build()
+        const inMemoryCache = InMemoryCacheTestDataBuilder.createWithRandomProps().build()
+
+        const sut = createSut(inMemoryCache, itemRepository)
         // Act
+        sut.processItems()
+        await testPromise.resolve([item]);
         // Assert
+        expect(inMemoryCache.update).to.have.been.calledOnceWith(item)
       })
 
       it.skip('publishes an item updated message', async () => {
@@ -86,7 +100,7 @@ describe('ItemProcessor', () => {
     itemRepository: ItemRepository | SinonStubbedInstance<ItemRepository>
   ) {
     return new ItemProcessor(
-      cache, 
+      cache,
       itemRepository as SinonStubbedInstance<ItemRepository> & ItemRepository
     )
   }

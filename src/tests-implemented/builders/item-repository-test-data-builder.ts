@@ -19,7 +19,7 @@ export class ItemRepositoryTestDataBuilder extends TestDataBuilder<ItemRepositor
     return new ItemRepositoryTestDataBuilder().withRandomProps()
   }
 
-  withItemsForGetAll(items: Item[]) {
+  withItemsForGetAll(...items: Item[]) {
     return this.withProp(o => {
       o.getAll.resolves(items)
     })
@@ -32,10 +32,10 @@ export class ItemRepositoryTestDataBuilder extends TestDataBuilder<ItemRepositor
   }
 
   withRandomProps() {
-    return this.withItemsForGetAll([
+    return this.withItemsForGetAll(
       testItemBuilder().build(),
       testItemBuilder().build(),
       testItemBuilder().build()
-    ])
+    )
   }
 }
