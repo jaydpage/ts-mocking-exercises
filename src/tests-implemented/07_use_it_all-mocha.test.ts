@@ -21,24 +21,15 @@ describe('ItemProcessor', () => {
     it('will not process items if processing is already busy', async () => {
       // Arrange
       const inMemoryCache = sinon.createStubInstance(InMemoryCache)
-      const itemRepository = sinon.createStubInstance(ItemRepository);
-      itemRepository.getAll.resolves([])
+      const itemRepository = sinon.createStubInstance(ItemRepository)
       
       const sut = new ItemProcessor(inMemoryCache, itemRepository as unknown as ItemRepository)
       // Act
-      const getAllWaitPromise = waitForCallTo(itemRepository.getAll)
       sut.processItems()
       sut.processItems()
-      await getAllWaitPromise;
       // Assert
       expect(itemRepository.getAll).to.have.been.calledOnce
     })
-
-    async function waitForCallTo(stub: sinon.SinonStub) {
-      return new Promise<void>(resolve => {
-        stub.callsFake(resolve)
-      })
-    }
 
     describe('given single unprocessed item', () => {
       it.skip('updates the cache with the item', async () => {
