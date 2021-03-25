@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@jest/globals'
+import { ItemProcessor } from "../tests-to-implement/07_use_it_all"
 
 describe('ItemProcessor', () => {
   describe('processItems', () => {

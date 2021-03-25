@@ -1,3 +1,5 @@
+import { generateDayMessage } from '../tests-to-implement/05_fake_timers'
+
 describe('generateDayMessage', () => {
   xit('returns a message containing the current time', () => {
     // Arrange

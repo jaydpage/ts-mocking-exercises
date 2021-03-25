@@ -1,4 +1,5 @@
 import { describe, expect, it } from '@jest/globals'
+import { ItemPriceAdjuster } from '../tests-to-implement/03_class_dependency_injected_into_sut'
 
 describe('ItemPriceAdjuster', () => {
   describe('price is less than 100', () => {

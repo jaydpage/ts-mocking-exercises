@@ -1,3 +1,5 @@
+import { ItemProcessor } from "../tests-to-implement/07_use_it_all"
+
 describe('ItemProcessor', () => {
   describe('processItems', () => {
     xit('will not process items if processing is already busy', async () => {
