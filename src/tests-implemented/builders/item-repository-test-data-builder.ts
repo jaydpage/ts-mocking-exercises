@@ -25,9 +25,9 @@ export class ItemRepositoryTestDataBuilder extends TestDataBuilder<ItemRepositor
     })
   }
 
-  withPromiseForGetAll(items: Promise<Item[]>) {
+  withPromiseForGetAll(callNumber: number, itemsPromise: Promise<Item[]>) {
     return this.withProp(o => {
-      o.getAll.returns(items)
+      o.getAll.onCall(callNumber).returns(itemsPromise)
     })
   }
 

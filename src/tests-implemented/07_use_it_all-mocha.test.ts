@@ -8,6 +8,8 @@ import { ItemRepositoryTestDataBuilder } from "./builders/item-repository-test-d
 import { InMemoryCacheTestDataBuilder } from "./builders/in-memory-cache-test-data-builder"
 import { PubSub, PubSubChannels } from "../tests-to-implement/06_PubSub"
 import { PubSubTestDataBuilder } from "./builders/pub-sub-test-data-builder"
+import { createPromise as createTestPromise } from "./helpers/test-promise"
+import { Item } from "../dependencies/Item"
 
 describe('ItemProcessor', () => {
   beforeEach(() => {
@@ -93,10 +95,38 @@ describe('ItemProcessor', () => {
     })
 
     describe('given newly added unprocessed items', () => {
-      it.skip('processes all newly added items every x seconds', async () => {
+      it('processes all newly added items every x seconds', async () => {
         // Arrange
-        // Act
-        // Assert
+        const item1 = testItemBuilder().build()
+        const item2 = testItemBuilder().build()
+        const item3 = testItemBuilder().build()
+        const getAllPromise1 = createTestPromise<Item[]>();
+        const getAllPromise2 = createTestPromise<Item[]>();
+
+        const itemRepository = ItemRepositoryTestDataBuilder.create()
+          .withPromiseForGetAll(0, getAllPromise1.promise)
+          .withPromiseForGetAll(1, getAllPromise2.promise)
+          .build()
+        const inMemoryCache = InMemoryCacheTestDataBuilder.createWithRandomProps().build()
+        const pubSub = PubSubTestDataBuilder.createWithRandomProps().build();
+
+        const sut = createSut(inMemoryCache, itemRepository, pubSub)
+        // Act & Assert
+        sut.processItems()
+
+        await getAllPromise1.resolve([item1])
+        expect(inMemoryCache.update).calledWith(item1).and.calledOnce
+        expect(pubSub.publish).calledWith(PubSubChannels.itemUpdated, item1).and.calledOnce
+        
+        sinon.clock.tick(5000)
+        
+        await getAllPromise2.resolve([item1, item2, item3])
+        expect(inMemoryCache.update).calledWith(item2)
+          .and.calledWith(item3)
+          .and.calledThrice
+        expect(pubSub.publish).calledWith(PubSubChannels.itemUpdated, item2)
+          .and.calledWith(PubSubChannels.itemUpdated, item3)
+          .and.calledThrice
       })
     })
 

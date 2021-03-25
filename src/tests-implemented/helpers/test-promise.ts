@@ -15,7 +15,6 @@ export function createPromise<T>(): TestPromise<T> {
   return {
     promise: promise,
     resolve: (result: T) => new Promise((resolve, reject) => {
-      console.log('calling local resolve')
       localResolve(result)
       queueMicrotask(() => {
         resolve()

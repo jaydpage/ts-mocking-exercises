@@ -22,7 +22,7 @@ export class ItemProcessor {
     this.isProcessing = true
 
     const unprocessedItems = await this.getUnprocessedItems()
-
+    
     for (const item of unprocessedItems) {
       this.cache.update(item)
       this.pubSub.publish(PubSubChannels.itemUpdated, item)
