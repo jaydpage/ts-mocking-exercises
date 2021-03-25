@@ -32,7 +32,7 @@ describe('ItemProcessor', () => {
       sut.processItems()
       sut.processItems()
       // Assert
-      expect(itemRepository.getAll).to.have.been.calledOnce
+      expect(itemRepository.getAll).calledOnce
     })
 
     describe('given single unprocessed item', () => {
@@ -49,7 +49,7 @@ describe('ItemProcessor', () => {
         // Act
         await sut.processItems()
         // Assert
-        expect(inMemoryCache.update).to.have.been.calledOnceWith(item)
+        expect(inMemoryCache.update).calledOnceWith(item)
       })
 
       it('publishes an item updated message', async () => {
@@ -62,20 +62,33 @@ describe('ItemProcessor', () => {
         const pubSub = PubSubTestDataBuilder.createWithRandomProps().build();
 
         const sut = createSut(
-          InMemoryCacheTestDataBuilder.createWithRandomProps().build(), 
+          InMemoryCacheTestDataBuilder.createWithRandomProps().build(),
           itemRepository,
           pubSub
         )
         // Act
         await sut.processItems()
         // Assert
-        expect(pubSub.publish).to.have.been.calledOnceWith(PubSubChannels.itemUpdated, item)
+        expect(pubSub.publish).calledOnceWith(PubSubChannels.itemUpdated, item)
       })
 
-      it.skip('does not process items that have already been processed', async () => {
+      it('does not process items that have already been processed', async () => {
         // Arrange
+        const item = testItemBuilder().build()
+
+        const itemRepository = ItemRepositoryTestDataBuilder.create()
+          .withItemsForGetAll(item)
+          .build()
+        const inMemoryCache = InMemoryCacheTestDataBuilder.createWithRandomProps().build()
+        const pubSub = PubSubTestDataBuilder.createWithRandomProps().build();
+
+        const sut = createSut(inMemoryCache, itemRepository, pubSub)
         // Act
+        await sut.processItems()
+        await sut.processItems()
         // Assert
+        expect(inMemoryCache.update).calledOnceWith(item)
+        expect(pubSub.publish).calledOnceWith(PubSubChannels.itemUpdated, item)
       })
     })
 
@@ -88,22 +101,70 @@ describe('ItemProcessor', () => {
     })
 
     describe('given multiple unprocessed items', () => {
-      it.skip('updates the cache with the item', async () => {
+      it('updates the cache with the item', async () => {
         // Arrange
+        const item1 = testItemBuilder().build()
+        const item2 = testItemBuilder().build()
+
+        const itemRepository = ItemRepositoryTestDataBuilder.create()
+          .withItemsForGetAll(item1, item2)
+          .build()
+        const inMemoryCache = InMemoryCacheTestDataBuilder.createWithRandomProps().build()
+
+        const sut = createSut(inMemoryCache, itemRepository)
         // Act
+        await sut.processItems()
         // Assert
+        expect(inMemoryCache.update).calledWith(item1)
+          .and.calledWith(item2)
+          .and.calledTwice
       })
 
-      it.skip('publishes an item updated message', async () => {
+      it('publishes an item updated message', async () => {
         // Arrange
+        const item1 = testItemBuilder().build()
+        const item2 = testItemBuilder().build()
+
+        const itemRepository = ItemRepositoryTestDataBuilder.create()
+          .withItemsForGetAll(item1, item2)
+          .build()
+        const pubSub = PubSubTestDataBuilder.createWithRandomProps().build();
+
+        const sut = createSut(
+          InMemoryCacheTestDataBuilder.createWithRandomProps().build(),
+          itemRepository,
+          pubSub
+        )
         // Act
+        await sut.processItems()
         // Assert
+        expect(pubSub.publish).calledWith(PubSubChannels.itemUpdated, item1)
+          .and.calledWith(PubSubChannels.itemUpdated, item2)
+          .and.calledTwice
       })
 
-      it.skip('does not process items that have already been processed', async () => {
+      it('does not process items that have already been processed', async () => {
         // Arrange
+        const item1 = testItemBuilder().build()
+        const item2 = testItemBuilder().build()
+
+        const itemRepository = ItemRepositoryTestDataBuilder.create()
+          .withItemsForGetAll(item1, item2)
+          .build()
+        const inMemoryCache = InMemoryCacheTestDataBuilder.createWithRandomProps().build()
+        const pubSub = PubSubTestDataBuilder.createWithRandomProps().build();
+
+        const sut = createSut(inMemoryCache, itemRepository, pubSub)
         // Act
+        await sut.processItems()
+        await sut.processItems()
         // Assert
+        expect(inMemoryCache.update).calledWith(item1)
+          .and.calledWith(item2)
+          .and.calledTwice
+        expect(pubSub.publish).calledWith(PubSubChannels.itemUpdated, item1)
+          .and.calledWith(PubSubChannels.itemUpdated, item2)
+          .and.calledTwice
       })
     })
   })
