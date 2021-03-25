@@ -6,8 +6,8 @@ import { default as sinon, SinonStubbedInstance } from 'sinon'
 import { expect } from 'chai'
 import { ItemRepositoryTestDataBuilder } from "./builders/item-repository-test-data-builder"
 import { InMemoryCacheTestDataBuilder } from "./builders/in-memory-cache-test-data-builder"
-import { Item } from "../dependencies/Item"
-import { createPromise } from "./helpers/test-promise"
+import { PubSub, PubSubChannels } from "../tests-to-implement/06_PubSub"
+import { PubSubTestDataBuilder } from "./builders/pub-sub-test-data-builder"
 
 describe('ItemProcessor', () => {
   beforeEach(() => {
@@ -16,6 +16,7 @@ describe('ItemProcessor', () => {
 
   afterEach(() => {
     sinon.clock.restore()
+    sinon.restore()
   })
 
   describe('processItems', () => {
@@ -51,10 +52,24 @@ describe('ItemProcessor', () => {
         expect(inMemoryCache.update).to.have.been.calledOnceWith(item)
       })
 
-      it.skip('publishes an item updated message', async () => {
+      it('publishes an item updated message', async () => {
         // Arrange
+        const item = testItemBuilder().build()
+
+        const itemRepository = ItemRepositoryTestDataBuilder.create()
+          .withItemsForGetAll(item)
+          .build()
+        const pubSub = PubSubTestDataBuilder.createWithRandomProps().build();
+
+        const sut = createSut(
+          InMemoryCacheTestDataBuilder.createWithRandomProps().build(), 
+          itemRepository,
+          pubSub
+        )
         // Act
+        await sut.processItems()
         // Assert
+        expect(pubSub.publish).to.have.been.calledOnceWith(PubSubChannels.itemUpdated, item)
       })
 
       it.skip('does not process items that have already been processed', async () => {
@@ -95,8 +110,15 @@ describe('ItemProcessor', () => {
 
   function createSut(
     cache: InMemoryCache | SinonStubbedInstance<InMemoryCache>,
-    itemRepository: ItemRepository | SinonStubbedInstance<ItemRepository>
+    itemRepository: ItemRepository | SinonStubbedInstance<ItemRepository>,
+    pubSub?: PubSub | SinonStubbedInstance<PubSub>
   ) {
+    cache ??= InMemoryCacheTestDataBuilder.createWithRandomProps().build();
+    itemRepository ??= ItemRepositoryTestDataBuilder.createWithRandomProps().build();
+    pubSub ??= PubSubTestDataBuilder.createWithRandomProps().build();
+
+    sinon.stub(PubSub, 'getInstance').callsFake(() => pubSub as PubSub);
+
     return new ItemProcessor(
       cache,
       itemRepository as SinonStubbedInstance<ItemRepository> & ItemRepository
