@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals'
 import { generateDayMessage } from "../tests-to-implement/05_fake_timers"
 
 describe('generateDayMessage', () => {

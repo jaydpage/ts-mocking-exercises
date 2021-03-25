@@ -3,11 +3,12 @@
 The aim of this exercise is to use various mocking techniques to successfully write unit tests for the provided code examples.
 
 ## Getting started
-By default testing with `mocha, sinon & chai` or `jest` is available. Jest is configured to run against `.spec.ts` files and mocha is configured to run against `.test.ts` files.
+By default testing with `mocha, sinon & chai, jest` or `jasmine` is available. Jest is configured to run against `.spec.ts` files and mocha is configured to run against `.test.ts` files and jasmine is configured to run against `.jasmine.ts` files.
 
-- run all tests (mocha and jest): `npm run test`
+- run all tests (mocha, jest and jest): `npm run test`
 - run jest tests: `npm run test-jest`
 - run mocha tests: `npm run test-mocha`
+- run jasmine tests: `npm run test-jasmine`
 
 Feel free to test with whichever testing/mocking framework you like, for example `jasmine`.
 

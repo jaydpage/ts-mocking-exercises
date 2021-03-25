@@ -1,8 +1,6 @@
-import { describe, expect, it } from '@jest/globals'
-
-describe('ItemPriceAdjusterVersion2', () => {
+describe('ItemPriceAdjuster', () => {
   describe('price is less than 100', () => {
-    it.skip('marks item price up by the markup percentage', async () => {
+    xit('marks item price up by the markup percentage', async () => {
       // Arrange
       // Act
       // Assert
@@ -10,7 +8,7 @@ describe('ItemPriceAdjusterVersion2', () => {
   })
 
   describe('price is greater than 100', () => {
-    it.skip('marks item price down by the markdown percentage', async () => {
+    xit('marks item price down by the markdown percentage', async () => {
       // Arrange
       // Act
       // Assert
@@ -18,7 +16,7 @@ describe('ItemPriceAdjusterVersion2', () => {
   })
 
   describe('price is equal to 100', () => {
-    it.skip('will not alter the price', async () => {
+    xit('will not alter the price', async () => {
       // Arrange
       // Act
       // Assert
