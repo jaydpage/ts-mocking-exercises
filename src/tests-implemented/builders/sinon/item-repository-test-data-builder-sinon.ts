@@ -1,10 +1,10 @@
-import { TestDataBuilder } from "./test-data-builder"
+import { TestDataBuilder } from "../test-data-builder"
 import { default as sinon, SinonStubbedInstance } from 'sinon'
-import { Item } from "../../dependencies/Item"
-import { ItemRepository } from "../../dependencies/ItemRepository"
-import { testItemBuilder } from "./test_item_builder"
+import { Item } from "../../../dependencies/Item"
+import { ItemRepository } from "../../../dependencies/ItemRepository"
+import { testItemBuilder } from "../test_item_builder"
 
-export class ItemRepositoryTestDataBuilder extends TestDataBuilder<ItemRepositoryTestDataBuilder, SinonStubbedInstance<ItemRepository>> {
+export class ItemRepositoryTestDataBuilderSinon extends TestDataBuilder<ItemRepositoryTestDataBuilderSinon, SinonStubbedInstance<ItemRepository>> {
   constructor() {
     super(() => {
       return sinon.createStubInstance(ItemRepository)
@@ -12,11 +12,11 @@ export class ItemRepositoryTestDataBuilder extends TestDataBuilder<ItemRepositor
   }
 
   static create() {
-    return new ItemRepositoryTestDataBuilder()
+    return new ItemRepositoryTestDataBuilderSinon()
   }
 
   static createWithRandomProps() {
-    return new ItemRepositoryTestDataBuilder().withRandomProps()
+    return new ItemRepositoryTestDataBuilderSinon().withRandomProps()
   }
 
   withItemsForGetAll(...items: Item[]) {

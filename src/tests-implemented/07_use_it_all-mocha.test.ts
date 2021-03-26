@@ -5,10 +5,10 @@ import { ItemProcessor } from "../tests-to-implement/07_use_it_all"
 import { testItemBuilder } from './builders/test_item_builder'
 import { default as sinon, SinonStubbedInstance } from 'sinon'
 import { expect } from 'chai'
-import { ItemRepositoryTestDataBuilder } from "./builders/item-repository-test-data-builder"
-import { InMemoryCacheTestDataBuilder } from "./builders/in-memory-cache-test-data-builder"
+import { ItemRepositoryTestDataBuilderSinon } from "./builders/sinon/item-repository-test-data-builder-sinon"
+import { InMemoryCacheTestDataBuilderSinon } from "./builders/sinon/in-memory-cache-test-data-builder-sinon"
 import { PubSub, PubSubChannels } from "../tests-to-implement/06_PubSub"
-import { PubSubTestDataBuilder } from "./builders/pub-sub-test-data-builder"
+import { PubSubTestDataBuilderSinon } from "./builders/sinon/pub-sub-test-data-builder-sinon"
 import { createPromise as createTestPromise } from "./helpers/test-promise"
 import { Item } from "../dependencies/Item"
 
@@ -25,10 +25,10 @@ describe('ItemProcessor', () => {
   describe('processItems', () => {
     it('will not process items if processing is already busy', async () => {
       // Arrange
-      const itemRepository = ItemRepositoryTestDataBuilder.createWithRandomProps().build()
+      const itemRepository = ItemRepositoryTestDataBuilderSinon.createWithRandomProps().build()
 
       const sut = createSut(
-        InMemoryCacheTestDataBuilder.createWithRandomProps().build(),
+        InMemoryCacheTestDataBuilderSinon.createWithRandomProps().build(),
         itemRepository
       )
       // Act
@@ -43,10 +43,10 @@ describe('ItemProcessor', () => {
         // Arrange
         const item = testItemBuilder().build()
 
-        const itemRepository = ItemRepositoryTestDataBuilder.create()
+        const itemRepository = ItemRepositoryTestDataBuilderSinon.create()
           .withItemsForGetAll(item)
           .build()
-        const inMemoryCache = InMemoryCacheTestDataBuilder.createWithRandomProps().build()
+        const inMemoryCache = InMemoryCacheTestDataBuilderSinon.createWithRandomProps().build()
 
         const sut = createSut(inMemoryCache, itemRepository)
         // Act
@@ -59,13 +59,13 @@ describe('ItemProcessor', () => {
         // Arrange
         const item = testItemBuilder().build()
 
-        const itemRepository = ItemRepositoryTestDataBuilder.create()
+        const itemRepository = ItemRepositoryTestDataBuilderSinon.create()
           .withItemsForGetAll(item)
           .build()
-        const pubSub = PubSubTestDataBuilder.createWithRandomProps().build();
+        const pubSub = PubSubTestDataBuilderSinon.createWithRandomProps().build();
 
         const sut = createSut(
-          InMemoryCacheTestDataBuilder.createWithRandomProps().build(),
+          InMemoryCacheTestDataBuilderSinon.createWithRandomProps().build(),
           itemRepository,
           pubSub
         )
@@ -79,11 +79,11 @@ describe('ItemProcessor', () => {
         // Arrange
         const item = testItemBuilder().build()
 
-        const itemRepository = ItemRepositoryTestDataBuilder.create()
+        const itemRepository = ItemRepositoryTestDataBuilderSinon.create()
           .withItemsForGetAll(item)
           .build()
-        const inMemoryCache = InMemoryCacheTestDataBuilder.createWithRandomProps().build()
-        const pubSub = PubSubTestDataBuilder.createWithRandomProps().build();
+        const inMemoryCache = InMemoryCacheTestDataBuilderSinon.createWithRandomProps().build()
+        const pubSub = PubSubTestDataBuilderSinon.createWithRandomProps().build();
 
         const sut = createSut(inMemoryCache, itemRepository, pubSub)
         // Act
@@ -104,12 +104,12 @@ describe('ItemProcessor', () => {
         const getAllPromise1 = createTestPromise<Item[]>();
         const getAllPromise2 = createTestPromise<Item[]>();
 
-        const itemRepository = ItemRepositoryTestDataBuilder.create()
+        const itemRepository = ItemRepositoryTestDataBuilderSinon.create()
           .withPromiseForGetAll(0, getAllPromise1.promise)
           .withPromiseForGetAll(1, getAllPromise2.promise)
           .build()
-        const inMemoryCache = InMemoryCacheTestDataBuilder.createWithRandomProps().build()
-        const pubSub = PubSubTestDataBuilder.createWithRandomProps().build();
+        const inMemoryCache = InMemoryCacheTestDataBuilderSinon.createWithRandomProps().build()
+        const pubSub = PubSubTestDataBuilderSinon.createWithRandomProps().build();
 
         const sut = createSut(inMemoryCache, itemRepository, pubSub)
         // Act & Assert
@@ -137,10 +137,10 @@ describe('ItemProcessor', () => {
         const item1 = testItemBuilder().build()
         const item2 = testItemBuilder().build()
 
-        const itemRepository = ItemRepositoryTestDataBuilder.create()
+        const itemRepository = ItemRepositoryTestDataBuilderSinon.create()
           .withItemsForGetAll(item1, item2)
           .build()
-        const inMemoryCache = InMemoryCacheTestDataBuilder.createWithRandomProps().build()
+        const inMemoryCache = InMemoryCacheTestDataBuilderSinon.createWithRandomProps().build()
 
         const sut = createSut(inMemoryCache, itemRepository)
         // Act
@@ -156,13 +156,13 @@ describe('ItemProcessor', () => {
         const item1 = testItemBuilder().build()
         const item2 = testItemBuilder().build()
 
-        const itemRepository = ItemRepositoryTestDataBuilder.create()
+        const itemRepository = ItemRepositoryTestDataBuilderSinon.create()
           .withItemsForGetAll(item1, item2)
           .build()
-        const pubSub = PubSubTestDataBuilder.createWithRandomProps().build();
+        const pubSub = PubSubTestDataBuilderSinon.createWithRandomProps().build();
 
         const sut = createSut(
-          InMemoryCacheTestDataBuilder.createWithRandomProps().build(),
+          InMemoryCacheTestDataBuilderSinon.createWithRandomProps().build(),
           itemRepository,
           pubSub
         )
@@ -179,11 +179,11 @@ describe('ItemProcessor', () => {
         const item1 = testItemBuilder().build()
         const item2 = testItemBuilder().build()
 
-        const itemRepository = ItemRepositoryTestDataBuilder.create()
+        const itemRepository = ItemRepositoryTestDataBuilderSinon.create()
           .withItemsForGetAll(item1, item2)
           .build()
-        const inMemoryCache = InMemoryCacheTestDataBuilder.createWithRandomProps().build()
-        const pubSub = PubSubTestDataBuilder.createWithRandomProps().build();
+        const inMemoryCache = InMemoryCacheTestDataBuilderSinon.createWithRandomProps().build()
+        const pubSub = PubSubTestDataBuilderSinon.createWithRandomProps().build();
 
         const sut = createSut(inMemoryCache, itemRepository, pubSub)
         // Act
@@ -205,9 +205,9 @@ describe('ItemProcessor', () => {
     itemRepository: ItemRepository | SinonStubbedInstance<ItemRepository>,
     pubSub?: PubSub | SinonStubbedInstance<PubSub>
   ) {
-    cache ??= InMemoryCacheTestDataBuilder.createWithRandomProps().build();
-    itemRepository ??= ItemRepositoryTestDataBuilder.createWithRandomProps().build();
-    pubSub ??= PubSubTestDataBuilder.createWithRandomProps().build();
+    cache ??= InMemoryCacheTestDataBuilderSinon.createWithRandomProps().build();
+    itemRepository ??= ItemRepositoryTestDataBuilderSinon.createWithRandomProps().build();
+    pubSub ??= PubSubTestDataBuilderSinon.createWithRandomProps().build();
 
     sinon.stub(PubSub, 'getInstance').callsFake(() => pubSub as PubSub);
 
