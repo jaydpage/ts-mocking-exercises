@@ -2,7 +2,8 @@ export function generateDayMessage() {
   const today = new Date()
   const day = today.getDay()
   const dayName = getDays()[day]
-  return `[${today.toLocaleTimeString('en-ZA')}]: Today is ${dayName}`
+  const time = today.toLocaleTimeString("en-ZA", { hour12: true }).toUpperCase()
+  return `[${time}]: Today is ${dayName}`
 }
 
 function getDays() {
