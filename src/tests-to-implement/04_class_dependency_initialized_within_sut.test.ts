@@ -5,7 +5,7 @@ import { ItemPriceAdjusterVersion2 } from '../tests-to-implement/04_class_depend
 
 describe('ItemPriceAdjusterVersion2', () => {
   describe('price is less than 100', () => {
-    it('marks item price up by the markup percentage', async () => {
+    it.skip('marks item price up by the markup percentage', async () => {
       // Arrange
       // Act
       // Assert
@@ -13,7 +13,7 @@ describe('ItemPriceAdjusterVersion2', () => {
   })
 
   describe('price is greater than 100', () => {
-    it('marks item price down by the markdown percentage', async () => {
+    it.skip('marks item price down by the markdown percentage', async () => {
       // Arrange
       // Act
       // Assert
@@ -21,7 +21,7 @@ describe('ItemPriceAdjusterVersion2', () => {
   })
 
   describe('price is equal to 100', () => {
-    it('will not alter the price', async () => {
+    it.skip('will not alter the price', async () => {
       // Arrange
       // Act
       // Assert

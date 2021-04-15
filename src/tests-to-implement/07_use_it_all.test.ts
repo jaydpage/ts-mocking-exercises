@@ -5,26 +5,26 @@ import { ItemProcessor } from "../tests-to-implement/07_use_it_all"
 
 describe('ItemProcessor', () => {
   describe('processItems', () => {
-    it('will not process items if processing is already busy', async () => {
+    it.skip('will not process items if processing is already busy', async () => {
       // Arrange
       // Act
       // Assert
     })
 
     describe('given single unprocessed item', () => {
-      it('updates the cache with the item', async () => {
+      it.skip('updates the cache with the item', async () => {
        // Arrange
       // Act
       // Assert
       })
 
-      it('publishes an item updated message', async () => {
+      it.skip('publishes an item updated message', async () => {
       // Arrange
       // Act
       // Assert
       })
 
-      it('does not process items that have already been processed', async () => {
+      it.skip('does not process items that have already been processed', async () => {
       // Arrange
       // Act
       // Assert
@@ -32,7 +32,7 @@ describe('ItemProcessor', () => {
     })
 
     describe('given newly added unprocessed items', () => {
-      it('processes all newly added items every x seconds', async () => {
+      it.skip('processes all newly added items every x seconds', async () => {
       // Arrange
       // Act
       // Assert
@@ -40,19 +40,19 @@ describe('ItemProcessor', () => {
     })
 
     describe('given multiple unprocessed items', () => {
-      it('updates the cache with the item', async () => {
+      it.skip('updates the cache with the item', async () => {
       // Arrange
       // Act
       // Assert
       })
 
-      it('publishes an item updated message', async () => {
+      it.skip('publishes an item updated message', async () => {
       // Arrange
       // Act
       // Assert
       })
 
-      it('does not process items that have already been processed', async () => {
+      it.skip('does not process items that have already been processed', async () => {
       // Arrange
       // Act
       // Assert

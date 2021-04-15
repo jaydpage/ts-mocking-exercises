@@ -5,7 +5,7 @@ import { getAllItemsOnSale } from '../tests-to-implement/02_function_return_valu
 
 describe('function mock return value', () => {
   describe('getAllItemsOnSale', () => {
-    it('returns only prices under 10', async () => {
+    it.skip('returns only prices under 10', async () => {
       // Arrange
       // Act
       // Assert
