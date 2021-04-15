@@ -16,7 +16,7 @@ Each exercise has it's own implementation and empty ignored tests. Tests have be
 
 The goal is to complete the empty tests for each exercise. Feel free to use whichever testing/mocking framework you like, you do not need to write the tests for all frameworks.
 
-Remember the test are all ignored so you will have to unignore them before they'll execute. To do that:
+Remember the tests are all ignored so you will have to unignore them before they'll execute. To do that:
 
 - for jasmine, change `xit(` to `it(`
 - for jest and mocha, change `it.skip(` to `it(`
