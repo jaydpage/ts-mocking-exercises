@@ -21,7 +21,9 @@ describe('ItemProcessor', () => {
   describe('processItems', () => {
     it('will not process items if processing is already busy', async () => {
       // Arrange
-      const itemRepository = ItemRepositoryTestDataBuilderJasmine.createWithRandomProps().build()
+      const itemRepository = ItemRepositoryTestDataBuilderJasmine.createWithRandomProps()
+      .withPromiseForGetAll(new Promise(() => {}), new Promise(() => {}))
+      .build()
 
       const sut = createSut(
         InMemoryCacheTestDataBuilderJasmine.createWithRandomProps().build(),
