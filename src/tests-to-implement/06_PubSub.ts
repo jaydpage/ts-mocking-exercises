@@ -24,6 +24,9 @@ export class PubSub {
   async publish(channel: string, payload: unknown) {
     console.log(`publishing ${JSON.stringify(payload)} on ${channel}`)
 
+    if (!this.subscriptions[channel])
+      return;
+
     for (const callback of this.subscriptions[channel]) {
       setTimeout(() => {
         callback(payload)
